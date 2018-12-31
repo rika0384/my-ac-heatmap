@@ -126,7 +126,7 @@ function getAOJ(handle){
                         if(problems[prob] == undefined){
                             problems[prob] = 1;
                             solved += 1;
-                            aoj_ac[(json[i].judgeDate/1000) - 32400] = 1;
+                            aoj_ac[(json[i].judgeDate/1000)] = 1;
                         }
                   }
               }
@@ -172,7 +172,7 @@ function getAtCoder(handle){
     		            if(problems[prob] == undefined){
     		                problems[prob] = 1;
     		                solved += 1;
-                            atcoder_ac[json[i].epoch_second - 32400] = 1;
+                            atcoder_ac[json[i].epoch_second] = 1;
     		            }
     	          }
               }
@@ -217,16 +217,16 @@ function getCodeForces(handle){
                             if(problems[prob.contestId][prob.name] == undefined){
                                    problems[prob.contestId][prob.name] = 1;
                                    solved += 1;
-                                   codeforces_ac[json[i].creationTimeSeconds - 32400] = 1;
+                                   codeforces_ac[json[i].creationTimeSeconds] = 1;
                     		}
                     	}else{
                     	       problems[prob.contestId] = {};
                     		   problems[prob.contestId][prob.name] = 1;
                     		   solved += 1;
-                               codeforces_ac[json[i].creationTimeSeconds - 32400] = 1;
+                               codeforces_ac[json[i].creationTimeSeconds] = 1;
                     	}
                     }
-                    //console.log(codeforces_ac);
+                    console.log(codeforces_ac);
                     console.log(solved);
                 }
                 var new_ac = solved - 45;
