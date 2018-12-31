@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>AC heatmap</title>
+  <link rel="stylesheet" href="./styles.css">
+  <!-- viewport meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <!-- cal-heatmap-->
+  <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/cal-heatmap/3.3.10/cal-heatmap.css" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+</head>
+<body>
+    <div class="title">AC heatmap</div>
+
+<!--
+    <div class="input">
+        <font>AtCoder ID:</font>
+        <input type="text" id="handle_atcoder" name="handle_atcoder">
+        <br>
+        <font>CodeForces ID:</font>
+        <input type="text" id="handle_codeforces" name="handle_codeforces">
+        <br>
+        <font>AOJ ID:</font>
+        <input type="text" id="handle_aoj" name="handle_aoj">
+        <br><br>
+    </div>
+    <div class="button">
+            <button type="submit" onclick="getData()">send</button>
+    </div>
+-->
+
+    <div class="box atcoder">
+        <div class="atcoder-title">AtCoder</div>
+        <div class="info container">
+            <div class="row">
+                <div class="col-md-2 id-title"> ID :</div>
+                <div class="col-md-4 id" id="atcoder_id"></div>
+                <div class="col-md-3 ac-title"> unique AC :</div>
+                <div class="col-md-2 ac" id="atcoder_solved"></div>
+            </div>
+        </div>
+        <div class="heatmap" id="atcoder-heatmap"></div>
+    </div>
+
+    <div class="box codeforces">
+        <div class="codeforces-title">codeforces</div>
+        <div class="info container">
+            <div class="row">
+                <div class="col-md-2 id-title"> ID :</div>
+                <div class="col-md-4 id" id="codeforces_id"></div>
+                <div class="col-md-3 ac-title"> unique AC :</div>
+                <div class="col-md-2 ac" id="codeforces_solved"></div>
+            </div>
+        </div>
+        <div class="heatmap" id="codeforces-heatmap"></div>
+    </div>
+
+    <div class="box yukicoder">
+        <div class="yukicoder-title">yukicoder</div>
+        <div class="info container">
+            <div class="row">
+                <div class="col-md-2 id-title"> ID :</div>
+                <div class="col-md-4 id" id="yukicoder_id"></div>
+                <div class="col-md-3 ac-title"> unique AC :</div>
+                <div class="col-md-2 ac" id="yukicoder_solved"></div>
+            </div>
+        </div>
+        <div class="heatmap" id="yukicoder-heatmap"></div>
+    </div>
+
+    <div class="box aoj">
+        <div class="aoj-title">AOJ</div>
+        <div class="info container">
+            <div class="row">
+                <div class="col-md-2 id-title"> ID :</div>
+                <div class="col-md-4 id" id="aoj_id"></div>
+                <div class="col-md-3 ac-title"> unique AC :</div>
+                <div class="col-md-2 ac" id="aoj_solved"></div>
+            </div>
+        </div>
+        <div class="heatmap" id="aoj-heatmap"></div>
+    </div>
+    <p>現在AOJの全submissionを取得できていないため、AOJのACが少なく表示されています</p>
+    <p>がんばってなおすのでもうちょっとまってくだしゃい＞＜</p>
+    <p>ごめんなしゃい＞＜</p>
+    <div id="footer">© 2018 All rights reserved</div>
+    <script src="./main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

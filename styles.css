@@ -1,0 +1,72 @@
+body{
+  font-family: 'Courier New', sans-serif;
+  font-size: 20px;
+}
+.title{
+    font-size: 100px;
+    text-align: center;
+    color: limegreen;
+}
+.input{
+    width: 400px;
+    margin: auto;
+}
+.button{
+    width:100px;
+    margin: auto;
+}
+.atcoder, .codeforces, .aoj, .yukicoder{
+    text-align: center;
+    font-size: 40px;
+    margin: 50px;
+}
+.atcoder-title, .codeforces-title, .aoj-title, .yukicoder-title{
+    width: 300px;
+    margin: auto;
+}
+.info{
+    font-size: 20px;
+    width: 300px;
+    margin: 10px;
+}
+.id, .ac{
+    background-color: white;
+}
+.id-title, .ac-title{
+    text-align: center;
+}
+.box{
+    padding: 20px;
+}
+.atcoder{
+    background-color: snow;
+}
+.codeforces{
+    background-color: aliceblue;
+}
+.aoj{
+    background-color: ivory;
+}
+.yukicoder{
+    background-color: tan;
+}
+.cal-heatmap-container{
+    margin: auto;
+}
+.heatmap{
+    background-color: white;
+    margin: 20px;
+    padding: 20px;
+    overflow-x: scroll;
+}
+p{
+    width: 350px;
+    margin: auto;
+}
+#footer{
+    background-color: aliceblue;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    margin-top:30px;
+}
