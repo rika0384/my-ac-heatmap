@@ -1,12 +1,27 @@
 var size = 13;
-var cal_aoj,cal_atcoder,cal_codeforces,cal_yukicoder;
+var cal_aoj,cal_atcoder,cal_codeforces,cal_yukicoder,cal_all;
 var now;
 var query_time;
+var count = 0;
+var all_solved = 0;
+var all_new_ac = 0;
+var all_ac = {};
 var new_time = 1546268400;//2019/1/1
 
 (function(){
     'use strict';
     now = new Date();
+    cal_all = new CalHeatMap();
+    cal_all.init({
+        itemSelector: '#all-heatmap',
+        domainLabelFormat: '%Y-%m',
+        start: new Date(now.getFullYear(), now.getMonth() - 11),
+        cellSize: size,
+        range: 12,
+        domain: "month",
+        domainGutter: 5,
+        legend: [1, 3, 5]
+    });
     cal_aoj = new CalHeatMap();
     cal_aoj.init({
         itemSelector: '#aoj-heatmap',
@@ -93,6 +108,10 @@ function getData(){
 */
     now = new Date();
     query_time = Math.floor(now/300);
+    count = 0;
+    all_solved = 0;
+    all_new_ac = 0;
+    all_ac = {};
 
     var handle_aoj = "is0384er";
     var handle_atcoder = "rika0384";
@@ -133,6 +152,7 @@ function getAOJ(handle){
                             problems[prob] = 1;
                             solved += 1;
                             aoj_ac[(json[i].judgeDate/1000)] = 1;
+                            all_ac[(json[i].judgeDate/1000)] = 1;
                             if(Number(json[i].judgeDate/1000) >= new_time)new_ac++;
                         }
                   }
@@ -140,8 +160,15 @@ function getAOJ(handle){
 
               console.log(solved);
               document.getElementById("aoj_id").textContent = handle;
-              document.getElementById("aoj_solved").textContent = solved + "AC(" + new_ac + "AC)";
+              document.getElementById("aoj_solved").textContent = solved + "AC（" + new_ac + "AC）";
               cal_aoj.update(aoj_ac);
+              all_solved += solved;
+              all_new_ac += new_ac;
+              count++;
+              if(count == 4){
+                  cal_all.update(all_ac);
+                  document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
+              }
 
 	      }).fail(function(data){
             alert("Failed(AOJ)");
@@ -181,6 +208,7 @@ function getAtCoder(handle){
     		                problems[prob] = 1;
     		                solved += 1;
                             atcoder_ac[json[i].epoch_second] = 1;
+                            all_ac[json[i].epoch_second] = 1;
                             if(Number(json[i].epoch_second) >= new_time)new_ac++;
     		            }
     	          }
@@ -188,8 +216,15 @@ function getAtCoder(handle){
               console.log(solved);
               console.log(new_ac);
               document.getElementById("atcoder_id").textContent = handle;
-              document.getElementById("atcoder_solved").textContent = solved +"AC(" + new_ac+ "AC)";
+              document.getElementById("atcoder_solved").textContent = solved +"AC（" + new_ac+ "AC）";
               cal_atcoder.update(atcoder_ac);
+              all_solved += solved;
+              all_new_ac += new_ac;
+              count++;
+              if(count == 4){
+                  cal_all.update(all_ac);
+                  document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
+              }
 
 	      }).fail(function(data){
 		        alert("Failed(AC)");
@@ -227,6 +262,7 @@ function getCodeForces(handle){
                                    problems[prob.contestId][prob.name] = 1;
                                    solved += 1;
                                    codeforces_ac[json[i].creationTimeSeconds] = 1;
+                                   all_ac[json[i].creationTimeSeconds] = 1;
                                    if(Number(json[i].creationTimeSeconds) >= new_time)new_ac++;
                     		}
                     	}else{
@@ -234,6 +270,7 @@ function getCodeForces(handle){
                     		   problems[prob.contestId][prob.name] = 1;
                     		   solved += 1;
                                codeforces_ac[json[i].creationTimeSeconds] = 1;
+                               all_ac[json[i].creationTimeSeconds] = 1;
                                if(Number(json[i].creationTimeSeconds) >= new_time)new_ac++;
                     	}
                     }
@@ -241,9 +278,15 @@ function getCodeForces(handle){
                     console.log(solved);
                 }
                 document.getElementById("codeforces_id").textContent = handle;
-                document.getElementById("codeforces_solved").textContent = solved + "AC(" + new_ac + "AC)";
+                document.getElementById("codeforces_solved").textContent = solved + "AC（" + new_ac + "AC）";
                 cal_codeforces.update(codeforces_ac);
-
+                all_solved += solved;
+                all_new_ac += new_ac;
+                count++;
+                if(count == 4){
+                    cal_all.update(all_ac);
+                    document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
+                }
 	      }).fail(function(data){
 	          alert("Failed(CF)");
 
@@ -254,10 +297,20 @@ function getCodeForces(handle){
 function getYukicoder(handle){
     var solved = 0;
     var yukicoder_ac = {"1511779777":1,"1546276642":1};
+    for(var key in yukicoder_ac){
+        all_ac[key] = 1;
+    }
     solved += Object.keys(yukicoder_ac).length;
     var new_ac = solved - 1;
     document.getElementById("yukicoder_id").textContent = handle;
     document.getElementById("yukicoder_solved").textContent = solved + "AC(" + new_ac + "AC)";
     cal_yukicoder.update(yukicoder_ac);
+    all_solved += solved;
+    all_new_ac += new_ac;
+    count++;
+    if(count == 4){
+        cal_all.update(all_ac);
+        document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
+    }
 
 }

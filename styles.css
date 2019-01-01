@@ -15,12 +15,12 @@ body{
     width:100px;
     margin: auto;
 }
-.atcoder, .codeforces, .aoj, .yukicoder{
+.atcoder, .codeforces, .aoj, .yukicoder,.all{
     text-align: center;
     font-size: 40px;
     margin: 50px;
 }
-.atcoder-title, .codeforces-title, .aoj-title, .yukicoder-title{
+.atcoder-title, .codeforces-title, .aoj-title, .yukicoder-title,.all-title{
     width: 300px;
     margin: auto;
 }
@@ -38,14 +38,17 @@ body{
 .box{
     padding: 20px;
 }
+.all{
+    background-color: #deffcc;
+}
 .atcoder{
-    background-color: snow;
+    background-color: lavenderblush;
 }
 .codeforces{
     background-color: aliceblue;
 }
 .aoj{
-    background-color: ivory;
+    background-color: lightyellow;
 }
 .yukicoder{
     background-color: tan;
