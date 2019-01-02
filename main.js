@@ -182,7 +182,7 @@ function getAtCoder(handle){
     //console.log(handle);
     var solved = 0;
     var new_ac = 0;
-    var url = "https://kenkoooo.com/atcoder/atcoder-api/results?user=" + handle + "&timestamp=" + query_time;;
+    var url = "https://kenkoooo.com/atcoder/atcoder-api/results?user=" + handle + "&timestamp=" + query_time;
     var query = "select * from json where url = '" + url + "'";
     var yql   = "https://query.yahooapis.com/v1/public/yql?format=json&q=" + encodeURIComponent(query);
     $.ajax(
@@ -238,7 +238,7 @@ function getCodeForces(handle){
     //console.log(handle);
     var solved = 0;
     var new_ac = 0;
-    var url = "https://codeforces.com/api/user.status?handle=" + handle + "&timestamp=" + query_time;;
+    var url = "https://codeforces.com/api/user.status?handle=" + handle + "&timestamp=" + query_time;
     var query = "select * from json where url = '" + url + "'";
     var yql   = "https://query.yahooapis.com/v1/public/yql?format=json&q=" + encodeURIComponent(query);
     $.ajax(
