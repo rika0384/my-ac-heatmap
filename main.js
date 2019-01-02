@@ -296,7 +296,7 @@ function getCodeForces(handle){
 }
 function getYukicoder(handle){
     var solved = 0;
-    var yukicoder_ac = {"1511779777":1,"1546276642":1};
+    var yukicoder_ac = {"1511779777":1,"1546276642":1,"1546414885":1};
     for(var key in yukicoder_ac){
         all_ac[key] = 1;
     }
