@@ -13,6 +13,7 @@ var all_ac = {};
 var new_time = 1546268400;//2019/1/1
 var day = 24*60*60;
 var today;
+var time_diff = 9*60*60;
 
 (function(){
     'use strict';
@@ -123,9 +124,9 @@ function getData(){
     today_codeforces = 0;
     today_yukicoder = 0;
     today_aoj = 0;
-
-    today = Math.floor(now/1000/day) * day - 9*60*60;
-    //console.log(today);
+    //console.log(now.getTime());
+    today = Math.floor((now.getTime()/1000 + time_diff)/day) * day - time_diff;
+    console.log(today);
 
     var handle_aoj = "is0384er";
     var handle_atcoder = "rika0384";
