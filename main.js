@@ -5,8 +5,14 @@ var query_time;
 var count = 0;
 var all_solved = 0;
 var all_new_ac = 0;
+var today_atcoder;
+var today_codeforces;
+var today_yukicoder;
+var today_aoj;
 var all_ac = {};
 var new_time = 1546268400;//2019/1/1
+var day = 24*60*60;
+var today;
 
 (function(){
     'use strict';
@@ -113,6 +119,14 @@ function getData(){
     all_new_ac = 0;
     all_ac = {};
 
+    today_atcoder = 0;
+    today_codeforces = 0;
+    today_yukicoder = 0;
+    today_aoj = 0;
+
+    today = Math.floor(now/1000/day) * day - 9*60*60;
+    //console.log(today);
+
     var handle_aoj = "is0384er";
     var handle_atcoder = "rika0384";
     var handle_codeforces = "rika0384";
@@ -154,6 +168,7 @@ function getAOJ(handle){
                             aoj_ac[(json[i].judgeDate/1000)] = 1;
                             all_ac[(json[i].judgeDate/1000)] = 1;
                             if(Number(json[i].judgeDate/1000) >= new_time)new_ac++;
+                            if(Number(json[i].judgeDate/1000) >= today)today_aoj++;
                         }
                   }
               }
@@ -168,6 +183,12 @@ function getAOJ(handle){
               if(count == 4){
                   cal_all.update(all_ac);
                   document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
+                  var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
+                  document.getElementById("today_all").textContent = today_all + "AC";
+                  document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
+                  document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
+                  document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
+                  document.getElementById("today_aoj").textContent = today_aoj + "AC";
               }
 
 	      }).fail(function(data){
@@ -210,6 +231,7 @@ function getAtCoder(handle){
                             atcoder_ac[json[i].epoch_second] = 1;
                             all_ac[json[i].epoch_second] = 1;
                             if(Number(json[i].epoch_second) >= new_time)new_ac++;
+                            if(Number(json[i].epoch_second) >= today)today_atcoder++;
     		            }
     	          }
               }
@@ -224,6 +246,12 @@ function getAtCoder(handle){
               if(count == 4){
                   cal_all.update(all_ac);
                   document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
+                  var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
+                  document.getElementById("today_all").textContent = today_all + "AC";
+                  document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
+                  document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
+                  document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
+                  document.getElementById("today_aoj").textContent = today_aoj + "AC";
               }
 
 	      }).fail(function(data){
@@ -264,6 +292,7 @@ function getCodeForces(handle){
                                    codeforces_ac[json[i].creationTimeSeconds] = 1;
                                    all_ac[json[i].creationTimeSeconds] = 1;
                                    if(Number(json[i].creationTimeSeconds) >= new_time)new_ac++;
+                                   if(Number(json[i].creationTimeSeconds) >= today)today_codeforces++;
                     		}
                     	}else{
                     	       problems[prob.contestId] = {};
@@ -272,6 +301,7 @@ function getCodeForces(handle){
                                codeforces_ac[json[i].creationTimeSeconds] = 1;
                                all_ac[json[i].creationTimeSeconds] = 1;
                                if(Number(json[i].creationTimeSeconds) >= new_time)new_ac++;
+                               if(Number(json[i].creationTimeSeconds) >= today)today_codeforces++;
                     	}
                     }
                     console.log(codeforces_ac);
@@ -286,6 +316,12 @@ function getCodeForces(handle){
                 if(count == 4){
                     cal_all.update(all_ac);
                     document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
+                    var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
+                    document.getElementById("today_all").textContent = today_all + "AC";
+                    document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
+                    document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
+                    document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
+                    document.getElementById("today_aoj").textContent = today_aoj + "AC";
                 }
 	      }).fail(function(data){
 	          alert("Failed(CF)");
@@ -296,12 +332,14 @@ function getCodeForces(handle){
 }
 function getYukicoder(handle){
     var solved = 0;
+    var new_ac = 0;
     var yukicoder_ac = {"1511779777":1,"1546276642":1,"1546414885":1};
     for(var key in yukicoder_ac){
         all_ac[key] = 1;
+         if(Number(key) >= new_time)new_ac++;
+        if(Number(key) >= today)today_yukicoder++;
     }
     solved += Object.keys(yukicoder_ac).length;
-    var new_ac = solved - 1;
     document.getElementById("yukicoder_id").textContent = handle;
     document.getElementById("yukicoder_solved").textContent = solved + "AC(" + new_ac + "AC)";
     cal_yukicoder.update(yukicoder_ac);
@@ -311,6 +349,12 @@ function getYukicoder(handle){
     if(count == 4){
         cal_all.update(all_ac);
         document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
+        var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
+        document.getElementById("today_all").textContent = today_all + "AC";
+        document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
+        document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
+        document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
+        document.getElementById("today_aoj").textContent = today_aoj + "AC";
     }
 
 }

@@ -37,6 +37,34 @@
             <button type="submit" onclick="getData()">send</button>
     </div>
 -->
+    <div>
+    <div class="today">
+        <div class="today-title">today's AC</div>
+        <div class="info container">
+            <div class="row ac-box">
+                <div class="col-md-7 today-title"> All</div>
+                <div class="col-md-5 ac" id="today_all"></div>
+            </div>
+            <div class="row ac-box">
+                <div class="col-md-7 today-title"> AtCoder</div>
+                <div class="col-md-5 ac" id="today_atcoder"></div>
+            </div>
+            <div class="row ac-box">
+                <div class="col-md-7 today-title"> codeforces</div>
+                <div class="col-md-5 ac" id="today_codeforces"></div>
+            </div>
+            <div class="row ac-box">
+                <div class="col-md-7 today-title"> yukicoder</div>
+                <div class="col-md-5 ac" id="today_yukicoder"></div>
+            </div>
+            <div class="row ac-box">
+                <div class="col-md-7 today-title"> AOJ</div>
+                <div class="col-md-5 ac" id="today_aoj"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
     <div class="box all">
         <div class="all-title">All</div>
         <div class="info container">
@@ -53,15 +81,15 @@
         <div class="atcoder-title">AtCoder</div>
         <div class="info container">
             <div class="row">
-                <div class="col-md-6 container">
+                <div class="col-md-5 container">
                     <div class="row">
                         <div class="col-md-3 id-title"> ID :</div>
                         <div class="col-md-8 id" id="atcoder_id"></div>
                     </div>
                 </div>
-                <div class="col-md-6 container">
+                <div class="col-md-7 container">
                     <div class="row">
-                        <div class="col-md-4 ac-title"> unique AC :</div>
+                        <div class="col-md-5 ac-title"> unique AC :</div>
                         <div class="col-md-7 ac" id="atcoder_solved"></div>
                     </div>
                 </div>
@@ -132,9 +160,6 @@
         </div>
         <div class="heatmap" id="aoj-heatmap"></div>
     </div>
-    <p>現在AOJの全submissionを取得できていないため、AOJのACが少なく表示されています</p>
-    <p>がんばってなおすのでもうちょっとまってくだしゃい＞＜</p>
-    <p>ごめんなしゃい＞＜</p>
     <div id="footer">© 2018 All rights reserved</div>
     <script src="./main.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
