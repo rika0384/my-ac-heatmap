@@ -144,58 +144,52 @@ function getAOJ(handle){
     //console.log(handle);
     var solved = 0;
     var new_ac = 0;
+
     var url = "https://judgeapi.u-aizu.ac.jp/solutions/users/" + handle + "?timestamp=" + query_time;
-    var query = "select * from json where url = '" + url + "'";
-    var yql   = "https://query.yahooapis.com/v1/public/yql?format=json&q=" + encodeURIComponent(query);
-    $.ajax(
-	      {
-		        type     : 'GET',
-		        url      : yql,
-		        dataType : 'json',
-		        timeout  : 20000,
-		        cache    : false,
-	      }).done(function(data){
-              //console.log(data);
-	          var json = data.query.results.json.json;
-              console.log(json);
-              var aoj_ac = {};
-              var problems = {};
-              if(json != undefined){
-                  for(var i = 0; i < json.length; i++){
-                        var prob = json[i].problemId;
-                        if(problems[prob] == undefined){
-                            problems[prob] = 1;
-                            solved += 1;
-                            aoj_ac[(json[i].judgeDate/1000)] = 1;
-                            all_ac[(json[i].judgeDate/1000)] = 1;
-                            if(Number(json[i].judgeDate/1000) >= new_time)new_ac++;
-                            if(Number(json[i].judgeDate/1000) >= today)today_aoj++;
-                        }
-                  }
-              }
 
-              console.log(solved);
-              document.getElementById("aoj_id").textContent = handle;
-              document.getElementById("aoj_solved").textContent = solved + "AC（" + new_ac + "AC）";
-              cal_aoj.update(aoj_ac);
-              all_solved += solved;
-              all_new_ac += new_ac;
-              count++;
-              if(count == 4){
-                  cal_all.update(all_ac);
-                  document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
-                  var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
-                  document.getElementById("today_all").textContent = today_all + "AC";
-                  document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
-                  document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
-                  document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
-                  document.getElementById("today_aoj").textContent = today_aoj + "AC";
-              }
+    fetch(url).then(function(response) {
+            return response.json();
+        }).then(function(json) {
+            //console.log(data);
+            //var json = data.query.results.json.json;
+            console.log(json);
+            var aoj_ac = {};
+            var problems = {};
+            if(json != undefined){
+                for(var i = 0; i < json.length; i++){
+                      var prob = json[i].problemId;
+                      if(problems[prob] == undefined){
+                          problems[prob] = 1;
+                          solved += 1;
+                          aoj_ac[(json[i].judgeDate/1000)] = 1;
+                          all_ac[(json[i].judgeDate/1000)] = 1;
+                          if(Number(json[i].judgeDate/1000) >= new_time)new_ac++;
+                          if(Number(json[i].judgeDate/1000) >= today)today_aoj++;
+                      }
+                }
+            }
 
-	      }).fail(function(data){
-            alert("Failed(AOJ)");
-		    console.log(data);
-	      });
+            console.log(solved);
+            document.getElementById("aoj_id").textContent = handle;
+            document.getElementById("aoj_solved").textContent = solved + "AC（" + new_ac + "AC）";
+            cal_aoj.update(aoj_ac);
+            all_solved += solved;
+            all_new_ac += new_ac;
+            count++;
+            if(count == 4){
+                cal_all.update(all_ac);
+                document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
+                var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
+                document.getElementById("today_all").textContent = today_all + "AC";
+                document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
+                document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
+                document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
+                document.getElementById("today_aoj").textContent = today_aoj + "AC";
+            }
+
+        });
+
+
 }
 
 function getAtCoder(handle){
@@ -205,60 +199,45 @@ function getAtCoder(handle){
     var solved = 0;
     var new_ac = 0;
     var url = "https://kenkoooo.com/atcoder/atcoder-api/results?user=" + handle + "&timestamp=" + query_time;
-    var query = "select * from json where url = '" + url + "'";
-    var yql   = "https://query.yahooapis.com/v1/public/yql?format=json&q=" + encodeURIComponent(query);
-    $.ajax(
-	      {
-		        type     : 'GET',
-		        url      : yql,
-		        dataType : 'json',
-		        timeout  : 20000,
-		        cache    : false,
-	      }).done(function(data){
-              var atcoder_ac = {};
-              if(data.query.results != null){
-    	          var json = data.query.results.json.json;
 
-                  console.log(data);
-                  //console.log(json);
+    fetch(url).then(function(response) {
+            return response.json();
+        }).then(function(json) {
+            console.log(json);
+            var atcoder_ac = {};
+            var problems = {};
+            for(var i = 0; i < json.length; i++){
+                  if(json[i].result != "AC")continue;
+                  var prob = json[i].problem_id;
+                  if(problems[prob] == undefined){
+                      problems[prob] = 1;
+                      solved += 1;
+                      atcoder_ac[json[i].epoch_second] = 1;
+                      all_ac[json[i].epoch_second] = 1;
+                      if(Number(json[i].epoch_second) >= new_time)new_ac++;
+                      if(Number(json[i].epoch_second) >= today)today_atcoder++;
+                  }
+            }
+            console.log(solved);
+            console.log(new_ac);
+            document.getElementById("atcoder_id").textContent = handle;
+            document.getElementById("atcoder_solved").textContent = solved +"AC（" + new_ac+ "AC）";
+            cal_atcoder.update(atcoder_ac);
+            all_solved += solved;
+            all_new_ac += new_ac;
+            count++;
+            if(count == 4){
+                cal_all.update(all_ac);
+                document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
+                var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
+                document.getElementById("today_all").textContent = today_all + "AC";
+                document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
+                document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
+                document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
+                document.getElementById("today_aoj").textContent = today_aoj + "AC";
+            }
+        });
 
-                  var problems = {};
-    	          for(var i = 0; i < json.length; i++){
-    		            if(json[i].result != "AC")continue;
-    		            var prob = json[i].problem_id;
-    		            if(problems[prob] == undefined){
-    		                problems[prob] = 1;
-    		                solved += 1;
-                            atcoder_ac[json[i].epoch_second] = 1;
-                            all_ac[json[i].epoch_second] = 1;
-                            if(Number(json[i].epoch_second) >= new_time)new_ac++;
-                            if(Number(json[i].epoch_second) >= today)today_atcoder++;
-    		            }
-    	          }
-              }
-              console.log(solved);
-              console.log(new_ac);
-              document.getElementById("atcoder_id").textContent = handle;
-              document.getElementById("atcoder_solved").textContent = solved +"AC（" + new_ac+ "AC）";
-              cal_atcoder.update(atcoder_ac);
-              all_solved += solved;
-              all_new_ac += new_ac;
-              count++;
-              if(count == 4){
-                  cal_all.update(all_ac);
-                  document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
-                  var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
-                  document.getElementById("today_all").textContent = today_all + "AC";
-                  document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
-                  document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
-                  document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
-                  document.getElementById("today_aoj").textContent = today_aoj + "AC";
-              }
-
-	      }).fail(function(data){
-		        alert("Failed(AC)");
-		        console.log(data);
-	      });
 }
 
 function getCodeForces(handle){
@@ -268,73 +247,64 @@ function getCodeForces(handle){
     var solved = 0;
     var new_ac = 0;
     var url = "https://codeforces.com/api/user.status?handle=" + handle + "&timestamp=" + query_time;
-    var query = "select * from json where url = '" + url + "'";
-    var yql   = "https://query.yahooapis.com/v1/public/yql?format=json&q=" + encodeURIComponent(query);
-    $.ajax(
-	      {
-		        type     : 'GET',
-		        url      : yql,
-		        dataType : 'json',
-		        timeout  : 10000,
-		        cache    : false,
-	      }).done(function(data){
-                console.log(data);
-                var codeforces_ac = {};
-                var json = data.query.results.json.result;
-                if(json != undefined){
-                    var problems = {};
-                    for(var i = 0; i < json.length; i++){
-                    	if(json[i].verdict != "OK" || json[i].testset != "TESTS" )  continue;
-                        var prob = json[i].problem;
-        	            if(problems[prob.contestId] != undefined){
-                            if(problems[prob.contestId][prob.name] == undefined){
-                                   problems[prob.contestId][prob.name] = 1;
-                                   solved += 1;
-                                   codeforces_ac[json[i].creationTimeSeconds] = 1;
-                                   all_ac[json[i].creationTimeSeconds] = 1;
-                                   if(Number(json[i].creationTimeSeconds) >= new_time)new_ac++;
-                                   if(Number(json[i].creationTimeSeconds) >= today)today_codeforces++;
-                    		}
-                    	}else{
-                    	       problems[prob.contestId] = {};
-                    		   problems[prob.contestId][prob.name] = 1;
-                    		   solved += 1;
-                               codeforces_ac[json[i].creationTimeSeconds] = 1;
-                               all_ac[json[i].creationTimeSeconds] = 1;
-                               if(Number(json[i].creationTimeSeconds) >= new_time)new_ac++;
-                               if(Number(json[i].creationTimeSeconds) >= today)today_codeforces++;
-                    	}
+
+    fetch(url).then(function(response) {
+            return response.json();
+        }).then(function(json) {
+            json = json.result;
+            console.log(json);
+            var codeforces_ac = {};
+
+            var problems = {};
+            for(var i = 0; i < json.length; i++){
+                if(json[i].verdict != "OK" || json[i].testset != "TESTS" )  continue;
+                var prob = json[i].problem;
+                if(problems[prob.contestId] != undefined){
+                    if(problems[prob.contestId][prob.name] == undefined){
+                           problems[prob.contestId][prob.name] = 1;
+                           solved += 1;
+                           codeforces_ac[json[i].creationTimeSeconds] = 1;
+                           all_ac[json[i].creationTimeSeconds] = 1;
+                           if(Number(json[i].creationTimeSeconds) >= new_time)new_ac++;
+                           if(Number(json[i].creationTimeSeconds) >= today)today_codeforces++;
                     }
-                    console.log(codeforces_ac);
-                    console.log(solved);
+                }else{
+                       problems[prob.contestId] = {};
+                       problems[prob.contestId][prob.name] = 1;
+                       solved += 1;
+                       codeforces_ac[json[i].creationTimeSeconds] = 1;
+                       all_ac[json[i].creationTimeSeconds] = 1;
+                       if(Number(json[i].creationTimeSeconds) >= new_time)new_ac++;
+                       if(Number(json[i].creationTimeSeconds) >= today)today_codeforces++;
                 }
-                document.getElementById("codeforces_id").textContent = handle;
-                document.getElementById("codeforces_solved").textContent = solved + "AC（" + new_ac + "AC）";
-                cal_codeforces.update(codeforces_ac);
-                all_solved += solved;
-                all_new_ac += new_ac;
-                count++;
-                if(count == 4){
-                    cal_all.update(all_ac);
-                    document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
-                    var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
-                    document.getElementById("today_all").textContent = today_all + "AC";
-                    document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
-                    document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
-                    document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
-                    document.getElementById("today_aoj").textContent = today_aoj + "AC";
-                }
-	      }).fail(function(data){
-	          alert("Failed(CF)");
+            }
+            console.log(codeforces_ac);
+            console.log(solved);
 
-		        console.log(data);
-	      });
+            document.getElementById("codeforces_id").textContent = handle;
+            document.getElementById("codeforces_solved").textContent = solved + "AC（" + new_ac + "AC）";
+            cal_codeforces.update(codeforces_ac);
+            all_solved += solved;
+            all_new_ac += new_ac;
+            count++;
+            if(count == 4){
+                cal_all.update(all_ac);
+                document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
+                var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
+                document.getElementById("today_all").textContent = today_all + "AC";
+                document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
+                document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
+                document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
+                document.getElementById("today_aoj").textContent = today_aoj + "AC";
+            }
 
+        });
+    
 }
 function getYukicoder(handle){
     var solved = 0;
     var new_ac = 0;
-    var yukicoder_ac = {"1511779777":1,"1546276642":1,"1546414885":1,"1546511280":1,"1546537883":1};
+    var yukicoder_ac = {"1511779777":1,"1546276642":1,"1546414885":1,"1546511280":1,"1546537883":1,"1546626859":1};
     for(var key in yukicoder_ac){
         all_ac[key] = 1;
          if(Number(key) >= new_time)new_ac++;
