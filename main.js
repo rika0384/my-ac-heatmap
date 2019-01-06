@@ -38,7 +38,7 @@ var time_diff = 9*60*60;
         range: 12,
         domain: "month",
         domainGutter: 5,
-        legendColors: ["#efefef", "gold"],
+        //legendColors: ["#efefef", "gold"],
         legend: [1, 3, 5]
     });
     cal_atcoder = new CalHeatMap();
@@ -50,7 +50,7 @@ var time_diff = 9*60*60;
         range: 12,
         domain: "month",
         domainGutter: 5,
-        legendColors: ["#efefef", "deeppink"],
+        //legendColors: ["#efefef", "deeppink"],
         legend: [1, 3, 5]
     });
     cal_codeforces = new CalHeatMap();
@@ -62,7 +62,7 @@ var time_diff = 9*60*60;
         range: 12,
         domain: "month",
         domainGutter: 5,
-        legendColors: ["#efefef", "navy"],
+        //legendColors: ["#efefef", "navy"],
         legend: [1, 3, 5]
     });
 
@@ -75,7 +75,7 @@ var time_diff = 9*60*60;
         range: 12,
         domain: "month",
         domainGutter: 5,
-        legendColors: ["#efefef", "brown"],
+        //legendColors: ["#efefef", "brown"],
         legend: [1, 3, 5]
     });
 /*
@@ -305,7 +305,7 @@ function getYukicoder(handle){
     var solved = 0;
     var new_ac = 0;
     var yukicoder_ac = {"1511779777":1,"1546276642":1,"1546414885":1,"1546511280":1,"1546537883":1,"1546626859":1,
-                        "1546762161":1};
+                        "1546762161":1,"1546771749":1};
     for(var key in yukicoder_ac){
         all_ac[key] = 1;
          if(Number(key) >= new_time)new_ac++;
