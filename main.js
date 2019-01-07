@@ -305,7 +305,7 @@ function getYukicoder(handle){
     var solved = 0;
     var new_ac = 0;
     var yukicoder_ac = {"1511779777":1,"1546276642":1,"1546414885":1,"1546511280":1,"1546537883":1,"1546626859":1,
-                        "1546762161":1,"1546771749":1};
+                        "1546762161":1,"1546771749":1,"1546794678":1,"1546836560":1};
     for(var key in yukicoder_ac){
         all_ac[key] = 1;
          if(Number(key) >= new_time)new_ac++;
