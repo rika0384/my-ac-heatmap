@@ -1,0 +1,18 @@
+body{
+  font-family: 'Courier New', sans-serif;
+  font-size: 20px;
+}
+.title{
+    font-size: 50px;
+    text-align: center;
+}
+.subtitle{
+    font-size: 40px;
+}
+.box{
+    margin: 10px;
+    width: 300px;
+}
+li{
+    margin: 5px;
+}

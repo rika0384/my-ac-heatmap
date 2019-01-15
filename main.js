@@ -306,10 +306,10 @@ function getYukicoder(handle){
     var new_ac = 0;
     var yukicoder_ac = {"1511779777":1,"1546276642":1,"1546414885":1,"1546511280":1,"1546537883":1,"1546626859":1,"1547025828":1,
                         "1546762161":1,"1546771749":1,"1546794678":1,"1546836560":1,"1546940842":1,"1547046983":1,"1547142667":1,
-                    "1547182712":1,"1547228625":1,"1547368816":1};
+                    "1547182712":1,"1547228625":1,"1547368816":1,"1547399156":1,"1547402021":1};
     for(var key in yukicoder_ac){
         all_ac[key] = 1;
-         if(Number(key) >= new_time)new_ac++;
+        if(Number(key) >= new_time)new_ac++;
         if(Number(key) >= today)today_yukicoder++;
     }
     solved += Object.keys(yukicoder_ac).length;
