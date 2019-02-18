@@ -15,6 +15,46 @@ var day = 24*60*60;
 var today;
 var time_diff = 9*60*60;
 
+let aoj = {};
+//
+aoj.api = {};
+
+aoj.api.baseUrl = 'https://judgeapi.u-aizu.ac.jp';
+
+aoj.api.request = (url, params) =>
+  fetch(`${url}?${$.param(Object.assign({ _timestamp: +new Date() }, params))}`)
+    .then(x => x.json());
+
+aoj.api.users = {};
+
+aoj.api.users.findById = id =>
+  aoj.api.request(`${aoj.api.baseUrl}/users/${id}`);
+
+aoj.api.solutions = {};
+
+aoj.api.solutions.findByUserId = (userId, page) =>
+  aoj.api.request(`${aoj.api.baseUrl}/solutions/users/${userId}`, { page });
+
+aoj.api.solutions.findAllByUserId = userId =>
+  new Promise((resolve, reject) => {
+    let allSolutions = [];
+    let page = 0;
+    let tryUnlessEmpty = () => {
+      aoj.api.solutions.findByUserId(userId, page).then(nextSolutions => {
+        if (nextSolutions.length === 0) {
+          allSolutions.sort((a, b) => a.submissionDate - b.submissionDate);
+          resolve(allSolutions);
+          return;
+        }
+        allSolutions = allSolutions.concat(nextSolutions);
+        page++;
+        tryUnlessEmpty();
+      });
+    };
+    tryUnlessEmpty();
+  });
+//
+
 (function(){
     'use strict';
     now = new Date();
@@ -138,57 +178,41 @@ function getData(){
     getYukicoder(handle_yukicoder);
 }
 
-function getAOJ(handle){
-    //var handle = document.getElementById("handle_aoj").value;
-    //var handle = "is0384er";
-    //console.log(handle);
-    var solved = 0;
-    var new_ac = 0;
+function getAOJ(handle) {
+    aoj.api.solutions.findAllByUserId(handle).then(function(solutions) {
+        let problems = new Set();
+        var aoj_ac = {};
+        var solved = 0;
+        var new_ac = 0;
+        for (let solution of solutions) {
+            if (problems.has(solution.problemId)) continue;
+            problems.add(solution.problemId);
+            solved += 1;
+            aoj_ac[(solution.judgeDate/1000)] = 1;
+            all_ac[(solution.judgeDate/1000)] = 1;
+            if(Number(solution.judgeDate/1000) >= new_time)new_ac++;
+            if(Number(solution.judgeDate/1000) >= today)today_aoj++;
+        }
 
-    var url = "https://judgeapi.u-aizu.ac.jp/solutions/users/" + handle + "?timestamp=" + query_time;
+        console.log(solved);
+        document.getElementById("aoj_id").textContent = handle;
+        document.getElementById("aoj_solved").textContent = solved + "AC（" + new_ac + "AC）";
+        cal_aoj.update(aoj_ac);
+        all_solved += solved;
+        all_new_ac += new_ac;
+        count++;
+        if(count == 4){
+            cal_all.update(all_ac);
+            document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
+            var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
+            document.getElementById("today_all").textContent = today_all + "AC";
+            document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
+            document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
+            document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
+            document.getElementById("today_aoj").textContent = today_aoj + "AC";
+        }
 
-    fetch(url).then(function(response) {
-            return response.json();
-        }).then(function(json) {
-            //console.log(data);
-            //var json = data.query.results.json.json;
-            console.log(json);
-            var aoj_ac = {};
-            var problems = {};
-            if(json != undefined){
-                for(var i = 0; i < json.length; i++){
-                      var prob = json[i].problemId;
-                      if(problems[prob] == undefined){
-                          problems[prob] = 1;
-                          solved += 1;
-                          aoj_ac[(json[i].judgeDate/1000)] = 1;
-                          all_ac[(json[i].judgeDate/1000)] = 1;
-                          if(Number(json[i].judgeDate/1000) >= new_time)new_ac++;
-                          if(Number(json[i].judgeDate/1000) >= today)today_aoj++;
-                      }
-                }
-            }
-
-            console.log(solved);
-            document.getElementById("aoj_id").textContent = handle;
-            document.getElementById("aoj_solved").textContent = solved + "AC（" + new_ac + "AC）";
-            cal_aoj.update(aoj_ac);
-            all_solved += solved;
-            all_new_ac += new_ac;
-            count++;
-            if(count == 4){
-                cal_all.update(all_ac);
-                document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
-                var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
-                document.getElementById("today_all").textContent = today_all + "AC";
-                document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
-                document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
-                document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
-                document.getElementById("today_aoj").textContent = today_aoj + "AC";
-            }
-
-        });
-
+    });
 
 }
 
@@ -307,7 +331,12 @@ function getYukicoder(handle){
     var yukicoder_ac = {"1511779777":1,"1546276642":1,"1546414885":1,"1546511280":1,"1546537883":1,"1546626859":1,"1547025828":1,
                         "1546762161":1,"1546771749":1,"1546794678":1,"1546836560":1,"1546940842":1,"1547046983":1,"1547142667":1,
                         "1547182712":1,"1547228625":1,"1547368816":1,"1547399156":1,"1547402021":1,"1547540060":1,"1547574871":1,
-                        "1547650890":1,"1547774174":1,"1547824952":1,"1547912025":1,"1548002716":1,"1548169174":1,"1548169874":1};
+                        "1547650890":1,"1547774174":1,"1547824952":1,"1547912025":1,"1548002716":1,"1548169174":1,"1548169874":1,
+                        "1548234283":1,"1548257597":1,"1548423757":1,"1548439119":1,"1548578454":1,"1548660259":1,"1548752028":1,
+                        "1548858093":1,"1548862195":1,"1549028684":1,"1549113255":1,"1549126023":1,"1549207646":1,"1549360051":1,
+                        "1549379896":1,"1549544053":1,"1549560405":1,"1549623013":1,"1549704808":1,"1549727155":1,"1549818393":1,
+                        "1549898165":1,"1550067136":1,"1550072508":1,"1550214189":1,"1550249210":1,"1550331293":1,"1550490019":1,
+                        "1550506221":1};
     for(var key in yukicoder_ac){
         all_ac[key] = 1;
         if(Number(key) >= new_time)new_ac++;
