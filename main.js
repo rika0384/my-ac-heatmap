@@ -328,39 +328,45 @@ function getCodeForces(handle){
 function getYukicoder(handle){
     var solved = 0;
     var new_ac = 0;
-    var yukicoder_ac = {"1511779777":1,"1546276642":1,"1546414885":1,"1546511280":1,"1546537883":1,"1546626859":1,"1547025828":1,
-                        "1546762161":1,"1546771749":1,"1546794678":1,"1546836560":1,"1546940842":1,"1547046983":1,"1547142667":1,
-                        "1547182712":1,"1547228625":1,"1547368816":1,"1547399156":1,"1547402021":1,"1547540060":1,"1547574871":1,
-                        "1547650890":1,"1547774174":1,"1547824952":1,"1547912025":1,"1548002716":1,"1548169174":1,"1548169874":1,
-                        "1548234283":1,"1548257597":1,"1548423757":1,"1548439119":1,"1548578454":1,"1548660259":1,"1548752028":1,
-                        "1548858093":1,"1548862195":1,"1549028684":1,"1549113255":1,"1549126023":1,"1549207646":1,"1549360051":1,
-                        "1549379896":1,"1549544053":1,"1549560405":1,"1549623013":1,"1549704808":1,"1549727155":1,"1549818393":1,
-                        "1549898165":1,"1550067136":1,"1550072508":1,"1550214189":1,"1550249210":1,"1550331293":1,"1550490019":1,
-                        "1550506221":1,"1550656602":1,"1550745798":1,"1550824009":1,"1550929661":1,"1550995551":1,"1551059627":1,
-                        "1551187297":1,"1551201430":1,"1551358319":1,"1551447820":1,"1551508582":1,"1551548988":1,"1551702977":1,
-                        "1551740296":1,"1552301069":1,"1552459117":1,"1552575498":1,"1552634473":1,"1552747759":1,"1552827066":1,
-                        "1552912419":1,"1553004191":1,"1553016050":1};
-    for(var key in yukicoder_ac){
-        all_ac[key] = 1;
-        if(Number(key) >= new_time)new_ac++;
-        if(Number(key) >= today)today_yukicoder++;
-    }
-    solved += Object.keys(yukicoder_ac).length;
-    document.getElementById("yukicoder_id").textContent = handle;
-    document.getElementById("yukicoder_solved").textContent = solved + "AC(" + new_ac + "AC)";
-    cal_yukicoder.update(yukicoder_ac);
-    all_solved += solved;
-    all_new_ac += new_ac;
-    count++;
-    if(count == 4){
-        cal_all.update(all_ac);
-        document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
-        var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
-        document.getElementById("today_all").textContent = today_all + "AC";
-        document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
-        document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
-        document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
-        document.getElementById("today_aoj").textContent = today_aoj + "AC";
-    }
+    var url = "https://yukicoder.me/api/v1/solved/name/" + handle;
+
+    fetch(url).then(function(response) {
+            return response.json();
+        }).then(function(json) {
+            console.log(json);
+            var yukicoder_ac = {};
+
+            var problems = {};
+            for(var i = 0; i < json.length; i++){
+                var prob = json[i].ProblemId;
+                if(problems[prob] == undefined){
+                    problems[prob] = 1;
+                    solved += 1;
+                    yukicoder_ac[new Date(json[i].Date).getTime()/1000] = 1;
+                    all_ac[new Date(json[i].Date).getTime()/1000] = 1;
+                    if(new Date(json[i].Date).getTime()/1000 >= new_time)new_ac++;
+                    if(new Date(json[i].Date).getTime()/1000 >= today)today_yukicoder++;
+
+                }
+            }
+
+
+                document.getElementById("yukicoder_id").textContent = handle;
+                document.getElementById("yukicoder_solved").textContent = solved + "AC(" + new_ac + "AC)";
+                cal_yukicoder.update(yukicoder_ac);
+                all_solved += solved;
+                all_new_ac += new_ac;
+                count++;
+                if(count == 4){
+                    cal_all.update(all_ac);
+                    document.getElementById("all_solved").textContent = all_solved + "AC（" + all_new_ac + "AC）";
+                    var today_all = today_atcoder + today_codeforces + today_yukicoder + today_aoj;
+                    document.getElementById("today_all").textContent = today_all + "AC";
+                    document.getElementById("today_atcoder").textContent = today_atcoder + "AC";
+                    document.getElementById("today_codeforces").textContent = today_codeforces + "AC";
+                    document.getElementById("today_yukicoder").textContent = today_yukicoder + "AC";
+                    document.getElementById("today_aoj").textContent = today_aoj + "AC";
+                }
+        });
 
 }
